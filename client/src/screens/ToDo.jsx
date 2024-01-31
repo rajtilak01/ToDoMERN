@@ -110,7 +110,7 @@ const ToDo = () => {
                   </div>
                   <button
                     onClick={() => {
-                      deleteHandler(index, task._id);
+                      deleteHandler(index);
                     }}
                     className="py-2 px-4 mr-4 rounded bg-zinc-800 text-white font-bold"
                   >
