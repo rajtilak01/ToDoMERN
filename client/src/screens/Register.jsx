@@ -1,21 +1,29 @@
 import React, {useState} from "react";
-
+import axios from 'axios'
+// import { useHistory } from 'react-router-dom';
 const Register = () => {
+  // const history = useHistory();
   const [name, setName] = useState("");
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setcpassword] = useState("");
 
-  async function registerHandler(){
+  async function registerHandler(e){
+    e.preventDefault()
     if(password == cpassword){
       const user = {
-        name,
+        username : name,
         email,
         password,
-        cpassword,
       }
       try {
-        const result = (await axios.post('/api/users/register',user)).data;
+        const result = (await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/register`, user)).data
+        // .then((data)=>{
+        //   // console.log('Successfully registered!')
+        //   res.redirect('/login')
+        // })
+        // history.push('/login')
+
         console.log(result);
       } catch (err) {
         console.log(err);
@@ -33,7 +41,9 @@ const Register = () => {
             id="email"
             type="email"
             placeholder="Enter your email"
-            className="rounded-t-md border-b  "
+            className="rounded-t-md text-black"
+            value={email}
+            onChange={(e)=>{setemail(e.target.value)}}
           />
         </div>
         <div className="flex gap-5 items-center"> 
@@ -41,10 +51,12 @@ const Register = () => {
             Name
           </label>
           <input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
+            id="name"
+            type="name"
+            placeholder="Enter your name"
             className="rounded-t-md border-b  "
+            value={name}
+            onChange={e => setName(e.target.value)}
           />
         </div>
         <div className="flex gap-5 items-center">
@@ -52,10 +64,12 @@ const Register = () => {
             Password
           </label>
           <input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            className="rounded-t-md border-b  "
+            id="password"
+            type="password"
+            placeholder="Enter your Password"
+            className="rounded-t-md text-black "
+            value={password}
+            onChange={e => setPassword(e.target.value)}
           />
         </div>
         <div className="flex gap-5 items-center">
@@ -63,16 +77,18 @@ const Register = () => {
             Confirm Password
           </label>
           <input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            className="rounded-t-md border-b  "
+            id="cpassword"
+            type="password"
+            placeholder="Confirm Password"
+            className="rounded-t-md text-black "
+            value={cpassword}
+            onChange={e=> setcpassword(e.target.value)}
           />
         </div>
 
         <button onClick={registerHandler} className='btn btn-primary bg-zinc-600 py-2 px-5 rounded-xl'>Sign Up</button>
 
-        <p className="mt-2">Already registered? <a href="/login" className='underline text-blue-300'>Login</a></p>
+        <p className="mt-2">Already registered? <a href="/" className='underline text-blue-300'>Login</a></p>
       </form>
     </div>
   );

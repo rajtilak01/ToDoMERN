@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
-require("dotenv").config();
+require('dotenv').config({ path: '.env.local' });
+
+// Your application code goes here
+
 
 const dbConnect = () => {
     mongoose.connect(process.env.DB_URL,{})

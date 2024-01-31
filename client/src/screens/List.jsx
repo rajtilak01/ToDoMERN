@@ -1,10 +1,15 @@
 import React from "react";
-
-const List = ({ list, setList}) => {
-  const deleteHandler = (index) => {
+import axios from "axios";
+const List = ({ list, setList,tasklist}) => {
+  async function deleteHandler(index) {
     let copyTask = [...list];
     copyTask.splice(index,1);
     setList(copyTask)
+    try {
+      const del = (await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/delete`,tasklist)).data;
+    } catch (err) {
+      console.log(err);
+    }
 
   }
   return (

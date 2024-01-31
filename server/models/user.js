@@ -14,6 +14,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    
-
+    task:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Task'
+    }],   
 })
+
+module.exports = mongoose.model('User', userSchema)

@@ -1,14 +1,25 @@
 import React, { useState } from "react";
-
+import { redirect,} from 'react-router-dom'
+import {createBrowserHistory} from 'history'
+import axios from 'axios'
 const Login = () => {
+  const history = createBrowserHistory();
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  function loginHandler(e) {
+  async function loginHandler(e) {
     e.preventDefault();
-    console.log(email);
-    console.log(password)
-    // const email = document.getElementById('email').value;
-    // const password = document.getElementById('password').value;
+    const user = {
+      email,
+      password
+    }
+    try {
+      const result = (await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/login`, user)).data
+      console.log(result.token)
+      localStorage.setItem("currUser",JSON.stringify(result));
+      window.location.href='/todo';
+    } catch (err) {
+      console.log(err);
+    }
   }
   return (
     <div className="h-screen w-screen bg-zinc-900 text-white flex items-center justify-center">
