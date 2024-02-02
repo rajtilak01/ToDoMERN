@@ -18,8 +18,9 @@ exports.task = async (req, res) => {
 
 exports.deleteTask = async (req, res) => {
   try { 
-    const { taskid } = req.body;
-    if (!taskid) return res.status(400).send("Missing task id");
+    const  taskid  = req.params.id;
+    console.log(taskid);
+    // if (!taskid) return res.status(400).send("Missing task id");
     let result = await Task.findByIdAndDelete(taskid);
     if (!result) return res.status(400).send("No task with that Id found.");
 
@@ -29,4 +30,9 @@ exports.deleteTask = async (req, res) => {
     res.status(400).json("error in deleting task");
   }
 };
-// module.exports = router
+
+
+exports.gettask = async(req,res)=>{
+  const tasks=await Task.find();
+  return  res.status(200).json(tasks);
+}

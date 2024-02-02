@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import List from "./List";
 import axios from "axios";
 import Navbar from "./Navbar";
@@ -10,7 +10,6 @@ const ToDo = () => {
   const [id, setid] = useState("");
   async function submitHandler(e) {
     e.preventDefault();
-    // console.log(list)
     const user = JSON.parse(localStorage.getItem("currUser"));
     const tasklist = {
       title: task,
@@ -24,38 +23,31 @@ const ToDo = () => {
           tasklist
         )
       ).data;
-      setList([
-        ...list,
-        { ...taskData, task: taskData.title, desc: taskData.description },
-      ]);
-      setdesc("");
+      const backData = (await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/tasks`)).data;
+      // console.log(backData);
+      setList([...backData]);
+      
       settask("");
       setid(taskData._id);
-      console.log(taskData);
-      console.log("printint id at 0", list[0]._id);
-      console.log(taskData._id);
     } catch (err) {
       console.log(err);
     }
   }
-
-  async function deleteHandler(index) {
+ 
+  async function dataHanlder() {
+    e.preventDefault();
+    const data = (await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/tasks`)).data
+    console.log(data);
+  }
+  dataHanlder
+  const deleteHandler = (index)=>{
+    // console.log("delete handler",list[index]);
+    const taskid = list[index]._id;
     let copyTask = [...list];
     copyTask.splice(index, 1);
     setList(copyTask);
-    console.log("printing id using index");
-    const taskid = list[index]._id;
-    try {
-      const del = (
-        await axios.post(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/delete`,
-           taskid 
-        )
-      ).data;
-      // const del = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/delete`,list[index]._id);
-    } catch (err) {
-      console.log(err);
-    }
+    const response = axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/delete/${taskid}`,)
+    // console.log("response after deleting",response);
   }
   return (
     <div className="h-screen w-screen bg-zinc-900 text-white">
@@ -102,10 +94,10 @@ const ToDo = () => {
                 <li key={index} className="w-full flex justify-between">
                   <div className="flex items-center justify-between mb-5 w-2/3">
                     <h5 className="text-2xl ml-2 font-semibold text-black">
-                      {task.task}
+                      {task.title}
                     </h5>
                     <h6 className="text-xl font-semibold text-black">
-                      {task.desc}
+                      {task.description}
                     </h6>
                   </div>
                   <button

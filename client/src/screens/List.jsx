@@ -1,17 +1,19 @@
 import React from "react";
 import axios from "axios";
 const List = ({ list, setList,tasklist}) => {
-  async function deleteHandler(index) {
+  async function dataHanlder(index) {
     let copyTask = [...list];
     copyTask.splice(index,1);
     setList(copyTask)
     try {
-      const del = (await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/delete`,tasklist)).data;
+      const del = (await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/tasks`)).data;
+      console.log(del);
     } catch (err) {
       console.log(err);
     }
 
   }
+  dataHanlder();
   return (
     <>
       {list.length > 0 ? (
