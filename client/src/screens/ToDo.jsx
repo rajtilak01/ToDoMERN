@@ -3,6 +3,7 @@ import List from "./List";
 import axios from "axios";
 import Navbar from "./Navbar";
 
+
 const ToDo = () => {
   const [task, settask] = useState("");
   const [desc, setdesc] = useState("");
@@ -28,6 +29,7 @@ const ToDo = () => {
       setList([...backData]);
       
       settask("");
+      setdesc("");
       setid(taskData._id);
     } catch (err) {
       console.log(err);
