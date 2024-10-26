@@ -19,7 +19,7 @@ exports.task = async (req, res) => {
 exports.deleteTask = async (req, res) => {
   try { 
     const  taskid  = req.params.id;
-    console.log(taskid);
+    // console.log(taskid);
     // if (!taskid) return res.status(400).send("Missing task id");
     let result = await Task.findByIdAndDelete(taskid);
     if (!result) return res.status(400).send("No task with that Id found.");
